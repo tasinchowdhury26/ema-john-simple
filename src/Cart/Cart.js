@@ -1,5 +1,7 @@
 import React from "react";
 import "./Cart.css";
+import { useContext } from "react";
+// import { UserContext } from "../App";
 
 
 const Cart = (props) => {
