@@ -2,29 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./Review.css";
 import {
   getDatabaseCart,
-  removeFromDatabaseCart,
-  processOrder,
+  removeFromDatabaseCart
 } from "../../utilities/databaseManager";
-import fakeData from "../../fakeData";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import Cart from "../../Cart/Cart";
-import orderImage from "../../images/tenor.gif";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Login/useAuth";
 
 const Review = () => {
   const [cart, setCart] = useState([]);
-  const [orderPlaced, setOrderPlaced] = useState(false);
   const auth = useAuth();
 
-  const handlePlaceOrder = () => {
-    setCart([]);
-    setOrderPlaced(true);
-    processOrder();
-  };
+  //We don't need it here, because we're getting it done in Shipment.js
+  // const handlePlaceOrder = () => {
+  //   setCart([]);
+  //   setOrderPlaced(true);
+  //   processOrder();
+  // };
 
   const removeProduct = (productKey) => {
-    console.log("remove clicked", productKey);
     const newCart = cart.filter((pd) => pd.key !== productKey);
     setCart(newCart);
     removeFromDatabaseCart(productKey);
@@ -32,18 +28,24 @@ const Review = () => {
   useEffect(() => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart); //Also can use Object.values to get value of the keys. You know, the object {key : value} !
-    const cartProducts = productKeys.map((key) => {
-      const product = fakeData.find((pd) => pd.key === key);
-      product.quantity = savedCart[key];
-      return product;
-    });
-    setCart(cartProducts);
+    console.log(productKeys);
+    fetch('http://localhost:4200/getProductsByKey', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productKeys)
+    }).then(res => res.json())
+    .then(data => {
+      const cartProducts = productKeys.map((key) => {
+        const product = data.find((pd) => pd.key === key);
+        product.quantity = savedCart[key];
+        return product;
+      });
+      setCart(cartProducts);
+    })
   }, []);
 
-  let doneImage;
-  if (orderPlaced) {
-    doneImage = <img src={orderImage} alt="" />;
-  }
   return (
     <div className="twin-container">
       <div className="product-container">
@@ -55,7 +57,6 @@ const Review = () => {
             product={pd}
           ></ReviewItem>
         ))}
-        {doneImage}
         {
           !cart.length && <h3>You have not started shopping.<a href="/shop">Keep Shopping</a></h3>
         }

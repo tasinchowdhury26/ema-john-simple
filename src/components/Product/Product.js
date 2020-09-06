@@ -4,8 +4,7 @@ import { faCoffee,faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import './Product.css'
 import { Link } from 'react-router-dom';
 
-const Product = (props) => {
-    // console.log(props);                                  //to see what properties are coming here from Shop.js
+const Product = (props) => {                                //to see what properties are coming here from Shop.js
     const {img,name,seller,price,stock,key} = props.product;
     return (
         <div className="product">

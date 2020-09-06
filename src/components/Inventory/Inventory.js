@@ -1,12 +1,16 @@
-import React from 'react';
-import './Inventory.css'
+import React from "react";
+import "./Inventory.css";
 
 const Inventory = () => {
-    return (
-        <div>
-            <h1>This is inventory coming soon</h1>
-        </div>
-    );
+  const handleAddInventory = () => {
+    
+  };
+  return (
+    <div>
+      <h1>Add inventory to sell more</h1>
+      <button onClick={handleAddInventory}>Add Inventory</button>
+    </div>
+  );
 };
 
 export default Inventory;

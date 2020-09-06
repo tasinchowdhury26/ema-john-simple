@@ -4,7 +4,7 @@ import './Header.css'
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useAuth } from '../Login/useAuth';
-import { Link, Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 
 const usePrevious = value =>{
     const prev = useRef();
@@ -24,7 +24,7 @@ const Header = () => {
             <nav>
             <a href="/shop">Shop</a>
             <a href="/review">Order Review</a>
-            <a href="/inventory">Manage Inventory</a>
+            <a href="/inventory">Inventory</a>
             {
                 auth.user &&
                 <span style={{borderRadius:'3px',padding: '4px', backgroundColor: 'lightgrey'}}>
